@@ -14,6 +14,7 @@ Then open http://127.0.0.1:5000 in your browser.
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -36,7 +37,7 @@ def home():
         try:
             # Read form inputs in the same order the model was trained on
             values = [float(request.form[feat]) for feat in features]
-            X = np.array(values).reshape(1, -1)
+            X = pd.DataFrame([values], columns=features)
 
             proba = model.predict_proba(X)[0][1]  # probability of class 1 (fraud)
             is_fraud = proba > threshold
